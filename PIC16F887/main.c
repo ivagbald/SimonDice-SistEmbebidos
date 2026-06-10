@@ -1,103 +1,127 @@
-// PIC16F887 — Receptor de comandos y reproductor de melodías
-// MikroC for PIC, oscilador externo 8 MHz
+unsigned char anterior = 0;
 
-// Configuración de bits (MikroC pragma)
-// Config: XT oscillator, WDT off, MCLR on, LVP off
-// Bits de config en MikroC: Project > Edit Project > Device Flags
+void melodiaInicio()
+{
+   Sound_Play(523,150);
+   Delay_ms(180);
 
-// -- Pines del bus paralelo (PORTB) ----------------------
-// RB0 = D0, RB1 = D1, RB2 = D2, RB3 = STROBE
-#define STROBE_PIN  RB3_bit
+   Sound_Play(659,150);
+   Delay_ms(180);
 
-// -- Buzzer en RC2 (CCP1, PWM Timer2) --------------------
-// MikroC tiene librería Sound que usa RC2 automáticamente
-
-// -- Frecuencias de cada color (Hz) ----------------------
-#define FREQ_GREEN   262u   // Do4
-#define FREQ_RED     330u   // Mi4
-#define FREQ_BLUE    392u   // Sol4
-#define FREQ_YELLOW  523u   // Do5
-
-// -- Duración nota simple (ms) ----------------------------
-#define NOTE_DUR     400u
-
-// -- Prototipos -------------------------------------------
-void play_note(unsigned int freq, unsigned int dur_ms);
-void melody_start(void);
-void melody_win(void);
-void melody_fail(void);
-void process_command(unsigned char cmd);
-
-// -- Leer bus: 3 bits de datos ----------------------------
-unsigned char read_bus(void) {
-    return (unsigned char)(PORTB & 0x07);  // máscara bits 0-2
+   Sound_Play(784,200);
 }
 
-// -- Tocar nota usando Sound_Play de MikroC ---------------
-void play_note(unsigned int freq, unsigned int dur_ms) {
-    Sound_Play(freq, dur_ms);
+void turnoJugador()
+{
+   Sound_Play(1000,100);
+   Delay_ms(120);
+
+   Sound_Play(1000,100);
 }
 
-// -- Melodías de evento -----------------------------------
-void melody_start(void) {
-    // Escala ascendente rápida
-    play_note(262, 120);
-    play_note(330, 120);
-    play_note(392, 120);
-    play_note(523, 200);
+void melodiaError()
+{
+   Sound_Play(250,500);
 }
 
-void melody_win(void) {
-    // Fanfarria corta
-    play_note(523, 150);
-    play_note(523, 150);
-    play_note(523, 150);
-    play_note(659, 400);
+void melodiaVictoria()
+{
+   Sound_Play(523,100);
+   Delay_ms(120);
+
+   Sound_Play(659,100);
+   Delay_ms(120);
+
+   Sound_Play(784,100);
+   Delay_ms(120);
+
+   Sound_Play(1046,300);
 }
 
-void melody_fail(void) {
-    // Descenso grave
-    play_note(200, 150);
-    play_note(150, 150);
-    play_note(100, 300);
+void nivel1()
+{
+   Sound_Play(400,100);
 }
 
-// -- Procesar comando recibido ----------------------------
-void process_command(unsigned char cmd) {
-    switch (cmd) {
-        case 0: break;  // silencio
-        case 1: play_note(FREQ_GREEN,  NOTE_DUR); break;
-        case 2: play_note(FREQ_RED,    NOTE_DUR); break;
-        case 3: play_note(FREQ_BLUE,   NOTE_DUR); break;
-        case 4: play_note(FREQ_YELLOW, NOTE_DUR); break;
-        case 5: melody_start(); break;
-        case 6: melody_win();   break;
-        case 7: melody_fail();  break;
-    }
+void nivel2()
+{
+   Sound_Play(700,100);
 }
 
-// -- main -------------------------------------------------
-void main(void) {
-    unsigned char prev_strobe = 0;
-    unsigned char cmd = 0;
-    ANSEL  = 0x00;   // Desactiva entradas analógicas en PORTA y PORTE
-    ANSELH = 0x00;   // Desactiva entradas analógicas en PORTB
-    // Configurar PORTB como entrada
-    TRISB = 0xFF;
-    TRISC = 0x00;   // RC2 salida (PWM buzzer)
+void nivel3()
+{
+   Sound_Play(1000,100);
+}
 
-    // Inicializar librería Sound (usa Timer2 + CCP1 en RC2)
-    Sound_Init(&PORTC, 2);  // RC2
+void nivel4()
+{
+   Sound_Play(1200,100);
+}
 
-    while (1) {
-        unsigned char strobe_now = STROBE_PIN;
+void nivel5()
+{
+   Sound_Play(1400,100);
+}
 
-        // Detectar flanco ascendente del strobe
-        if (strobe_now && !prev_strobe) {
-            cmd = read_bus();
-            process_command(cmd);
-        }
+void main()
+{
+   ANSEL = 0;
+   ANSELH = 0;
 
-        prev_strobe = strobe_now;
-    }
+   TRISB = 0xFF;
+
+   TRISC2_bit = 0;
+
+   Sound_Init(&PORTC,2);
+
+   while(1)
+   {
+      unsigned char actual;
+
+      actual = PORTB & 0x0F;
+
+      if(actual != anterior)
+      {
+         switch(actual)
+         {
+            case 1:
+               melodiaInicio();
+               break;
+
+            case 2:
+               turnoJugador();
+               break;
+
+            case 3:
+               melodiaError();
+               break;
+
+            case 4:
+               melodiaVictoria();
+               break;
+
+            case 5:
+               nivel1();
+               break;
+
+            case 6:
+               nivel2();
+               break;
+
+            case 7:
+               nivel3();
+               break;
+
+            case 8:
+               nivel4();
+               break;
+
+            case 9:
+               nivel5();
+               break;
+         }
+
+         anterior = actual;
+      }
+   }
 }
