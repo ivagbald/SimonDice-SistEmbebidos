@@ -1,7 +1,7 @@
-// PIC16F887 ó Receptor de comandos y reproductor de melodÌas
+// PIC16F887 ‚Äî Receptor de comandos y reproductor de melod√≠as
 // MikroC for PIC, oscilador externo 8 MHz
 
-// ConfiguraciÛn de bits (MikroC pragma)
+// Configuraci√≥n de bits (MikroC pragma)
 // Config: XT oscillator, WDT off, MCLR on, LVP off
 // Bits de config en MikroC: Project > Edit Project > Device Flags
 
@@ -10,7 +10,7 @@
 #define STROBE_PIN  RB3_bit
 
 // -- Buzzer en RC2 (CCP1, PWM Timer2) --------------------
-// MikroC tiene librerÌa Sound que usa RC2 autom·ticamente
+// MikroC tiene librer√≠a Sound que usa RC2 autom√°ticamente
 
 // -- Frecuencias de cada color (Hz) ----------------------
 #define FREQ_GREEN   262u   // Do4
@@ -18,7 +18,7 @@
 #define FREQ_BLUE    392u   // Sol4
 #define FREQ_YELLOW  523u   // Do5
 
-// -- DuraciÛn nota simple (ms) ----------------------------
+// -- Duraci√≥n nota simple (ms) ----------------------------
 #define NOTE_DUR     400u
 
 // -- Prototipos -------------------------------------------
@@ -30,7 +30,7 @@ void process_command(unsigned char cmd);
 
 // -- Leer bus: 3 bits de datos ----------------------------
 unsigned char read_bus(void) {
-    return (unsigned char)(PORTB & 0x07);  // m·scara bits 0-2
+    return (unsigned char)(PORTB & 0x07);  // m√°scara bits 0-2
 }
 
 // -- Tocar nota usando Sound_Play de MikroC ---------------
@@ -38,9 +38,9 @@ void play_note(unsigned int freq, unsigned int dur_ms) {
     Sound_Play(freq, dur_ms);
 }
 
-// -- MelodÌas de evento -----------------------------------
+// -- Melod√≠as de evento -----------------------------------
 void melody_start(void) {
-    // Escala ascendente r·pida
+    // Escala ascendente r√°pida
     play_note(262, 120);
     play_note(330, 120);
     play_note(392, 120);
@@ -80,12 +80,13 @@ void process_command(unsigned char cmd) {
 void main(void) {
     unsigned char prev_strobe = 0;
     unsigned char cmd = 0;
-
+    ANSEL  = 0x00;   // Desactiva entradas anal√≥gicas en PORTA y PORTE
+    ANSELH = 0x00;   // Desactiva entradas anal√≥gicas en PORTB
     // Configurar PORTB como entrada
     TRISB = 0xFF;
     TRISC = 0x00;   // RC2 salida (PWM buzzer)
 
-    // Inicializar librerÌa Sound (usa Timer2 + CCP1 en RC2)
+    // Inicializar librer√≠a Sound (usa Timer2 + CCP1 en RC2)
     Sound_Init(&PORTC, 2);  // RC2
 
     while (1) {
