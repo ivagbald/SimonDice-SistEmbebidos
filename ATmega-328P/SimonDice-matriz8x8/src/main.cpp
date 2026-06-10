@@ -258,7 +258,12 @@ int main(void) {
     PORTC  = 0x00;
 
     max_init();
-    srand(42);  // semilla fija (en producción usar ADC flotante)
+    // Generacion de semilla aleatoria leyendo ruido del ADC0
+    ADMUX = (1 << REFS0);
+    ADCSRA = (1 << ADEN) | (1 << ADSC);
+    while (ADCSRA & (1 << ADSC));
+    srand(ADC);
+    ADCSRA = 0;
 
     // Inicio
     pic_send(CMD_MELODY_START);
