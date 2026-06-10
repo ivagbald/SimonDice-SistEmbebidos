@@ -1,313 +1,440 @@
 
-_read_bus:
+_melodiaInicio:
 
-;main.c,32 :: 		unsigned char read_bus(void) {
-;main.c,33 :: 		return (unsigned char)(PORTB & 0x07);  // máscara bits 0-2
-	MOVLW      7
-	ANDWF      PORTB+0, 0
-	MOVWF      R0+0
-;main.c,34 :: 		}
-L_end_read_bus:
-	RETURN
-; end of _read_bus
-
-_play_note:
-
-;main.c,37 :: 		void play_note(unsigned int freq, unsigned int dur_ms) {
-;main.c,38 :: 		Sound_Play(freq, dur_ms);
-	MOVF       FARG_play_note_freq+0, 0
+;main.c,3 :: 		void melodiaInicio()
+;main.c,5 :: 		Sound_Play(523,150);
+	MOVLW      11
 	MOVWF      FARG_Sound_Play_freq_in_hz+0
-	MOVF       FARG_play_note_freq+1, 0
+	MOVLW      2
 	MOVWF      FARG_Sound_Play_freq_in_hz+1
-	MOVF       FARG_play_note_dur_ms+0, 0
+	MOVLW      150
 	MOVWF      FARG_Sound_Play_duration_ms+0
-	MOVF       FARG_play_note_dur_ms+1, 0
+	CLRF       FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,6 :: 		Delay_ms(180);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      212
+	MOVWF      R12+0
+	MOVLW      133
+	MOVWF      R13+0
+L_melodiaInicio0:
+	DECFSZ     R13+0, 1
+	GOTO       L_melodiaInicio0
+	DECFSZ     R12+0, 1
+	GOTO       L_melodiaInicio0
+	DECFSZ     R11+0, 1
+	GOTO       L_melodiaInicio0
+;main.c,8 :: 		Sound_Play(659,150);
+	MOVLW      147
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      2
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      150
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	CLRF       FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,9 :: 		Delay_ms(180);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      212
+	MOVWF      R12+0
+	MOVLW      133
+	MOVWF      R13+0
+L_melodiaInicio1:
+	DECFSZ     R13+0, 1
+	GOTO       L_melodiaInicio1
+	DECFSZ     R12+0, 1
+	GOTO       L_melodiaInicio1
+	DECFSZ     R11+0, 1
+	GOTO       L_melodiaInicio1
+;main.c,11 :: 		Sound_Play(784,200);
+	MOVLW      16
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      3
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      200
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	CLRF       FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,12 :: 		}
+L_end_melodiaInicio:
+	RETURN
+; end of _melodiaInicio
+
+_turnoJugador:
+
+;main.c,14 :: 		void turnoJugador()
+;main.c,16 :: 		Sound_Play(1000,100);
+	MOVLW      232
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      3
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,17 :: 		Delay_ms(120);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      56
+	MOVWF      R12+0
+	MOVLW      173
+	MOVWF      R13+0
+L_turnoJugador2:
+	DECFSZ     R13+0, 1
+	GOTO       L_turnoJugador2
+	DECFSZ     R12+0, 1
+	GOTO       L_turnoJugador2
+	DECFSZ     R11+0, 1
+	GOTO       L_turnoJugador2
+;main.c,19 :: 		Sound_Play(1000,100);
+	MOVLW      232
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      3
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,20 :: 		}
+L_end_turnoJugador:
+	RETURN
+; end of _turnoJugador
+
+_melodiaError:
+
+;main.c,22 :: 		void melodiaError()
+;main.c,24 :: 		Sound_Play(250,500);
+	MOVLW      250
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	CLRF       FARG_Sound_Play_freq_in_hz+1
+	MOVLW      244
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      1
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,25 :: 		}
+L_end_melodiaError:
+	RETURN
+; end of _melodiaError
+
+_melodiaVictoria:
+
+;main.c,27 :: 		void melodiaVictoria()
+;main.c,29 :: 		Sound_Play(523,100);
+	MOVLW      11
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      2
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,30 :: 		Delay_ms(120);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      56
+	MOVWF      R12+0
+	MOVLW      173
+	MOVWF      R13+0
+L_melodiaVictoria3:
+	DECFSZ     R13+0, 1
+	GOTO       L_melodiaVictoria3
+	DECFSZ     R12+0, 1
+	GOTO       L_melodiaVictoria3
+	DECFSZ     R11+0, 1
+	GOTO       L_melodiaVictoria3
+;main.c,32 :: 		Sound_Play(659,100);
+	MOVLW      147
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      2
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,33 :: 		Delay_ms(120);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      56
+	MOVWF      R12+0
+	MOVLW      173
+	MOVWF      R13+0
+L_melodiaVictoria4:
+	DECFSZ     R13+0, 1
+	GOTO       L_melodiaVictoria4
+	DECFSZ     R12+0, 1
+	GOTO       L_melodiaVictoria4
+	DECFSZ     R11+0, 1
+	GOTO       L_melodiaVictoria4
+;main.c,35 :: 		Sound_Play(784,100);
+	MOVLW      16
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      3
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,36 :: 		Delay_ms(120);
+	MOVLW      2
+	MOVWF      R11+0
+	MOVLW      56
+	MOVWF      R12+0
+	MOVLW      173
+	MOVWF      R13+0
+L_melodiaVictoria5:
+	DECFSZ     R13+0, 1
+	GOTO       L_melodiaVictoria5
+	DECFSZ     R12+0, 1
+	GOTO       L_melodiaVictoria5
+	DECFSZ     R11+0, 1
+	GOTO       L_melodiaVictoria5
+;main.c,38 :: 		Sound_Play(1046,300);
+	MOVLW      22
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      4
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      44
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      1
 	MOVWF      FARG_Sound_Play_duration_ms+1
 	CALL       _Sound_Play+0
 ;main.c,39 :: 		}
-L_end_play_note:
+L_end_melodiaVictoria:
 	RETURN
-; end of _play_note
+; end of _melodiaVictoria
 
-_melody_start:
+_nivel1:
 
-;main.c,42 :: 		void melody_start(void) {
-;main.c,44 :: 		play_note(262, 120);
-	MOVLW      6
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      120
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      0
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,45 :: 		play_note(330, 120);
-	MOVLW      74
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      120
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      0
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,46 :: 		play_note(392, 120);
-	MOVLW      136
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      120
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      0
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,47 :: 		play_note(523, 200);
-	MOVLW      11
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      200
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,48 :: 		}
-L_end_melody_start:
-	RETURN
-; end of _melody_start
-
-_melody_win:
-
-;main.c,50 :: 		void melody_win(void) {
-;main.c,52 :: 		play_note(523, 150);
-	MOVLW      11
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      150
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,53 :: 		play_note(523, 150);
-	MOVLW      11
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      150
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,54 :: 		play_note(523, 150);
-	MOVLW      11
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      150
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,55 :: 		play_note(659, 400);
-	MOVLW      147
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
+;main.c,41 :: 		void nivel1()
+;main.c,43 :: 		Sound_Play(400,100);
 	MOVLW      144
-	MOVWF      FARG_play_note_dur_ms+0
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
 	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,56 :: 		}
-L_end_melody_win:
-	RETURN
-; end of _melody_win
-
-_melody_fail:
-
-;main.c,58 :: 		void melody_fail(void) {
-;main.c,60 :: 		play_note(200, 150);
-	MOVLW      200
-	MOVWF      FARG_play_note_freq+0
-	CLRF       FARG_play_note_freq+1
-	MOVLW      150
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,61 :: 		play_note(150, 150);
-	MOVLW      150
-	MOVWF      FARG_play_note_freq+0
-	CLRF       FARG_play_note_freq+1
-	MOVLW      150
-	MOVWF      FARG_play_note_dur_ms+0
-	CLRF       FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,62 :: 		play_note(100, 300);
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
 	MOVLW      100
-	MOVWF      FARG_play_note_freq+0
+	MOVWF      FARG_Sound_Play_duration_ms+0
 	MOVLW      0
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      44
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-;main.c,63 :: 		}
-L_end_melody_fail:
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,44 :: 		}
+L_end_nivel1:
 	RETURN
-; end of _melody_fail
+; end of _nivel1
 
-_process_command:
+_nivel2:
 
-;main.c,66 :: 		void process_command(unsigned char cmd) {
-;main.c,67 :: 		switch (cmd) {
-	GOTO       L_process_command0
-;main.c,68 :: 		case 0: break;  // silencio
-L_process_command2:
-	GOTO       L_process_command1
-;main.c,69 :: 		case 1: play_note(FREQ_GREEN,  NOTE_DUR); break;
-L_process_command3:
-	MOVLW      6
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      144
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-	GOTO       L_process_command1
-;main.c,70 :: 		case 2: play_note(FREQ_RED,    NOTE_DUR); break;
-L_process_command4:
-	MOVLW      74
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      144
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-	GOTO       L_process_command1
-;main.c,71 :: 		case 3: play_note(FREQ_BLUE,   NOTE_DUR); break;
-L_process_command5:
-	MOVLW      136
-	MOVWF      FARG_play_note_freq+0
-	MOVLW      1
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      144
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-	GOTO       L_process_command1
-;main.c,72 :: 		case 4: play_note(FREQ_YELLOW, NOTE_DUR); break;
-L_process_command6:
-	MOVLW      11
-	MOVWF      FARG_play_note_freq+0
+;main.c,46 :: 		void nivel2()
+;main.c,48 :: 		Sound_Play(700,100);
+	MOVLW      188
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
 	MOVLW      2
-	MOVWF      FARG_play_note_freq+1
-	MOVLW      144
-	MOVWF      FARG_play_note_dur_ms+0
-	MOVLW      1
-	MOVWF      FARG_play_note_dur_ms+1
-	CALL       _play_note+0
-	GOTO       L_process_command1
-;main.c,73 :: 		case 5: melody_start(); break;
-L_process_command7:
-	CALL       _melody_start+0
-	GOTO       L_process_command1
-;main.c,74 :: 		case 6: melody_win();   break;
-L_process_command8:
-	CALL       _melody_win+0
-	GOTO       L_process_command1
-;main.c,75 :: 		case 7: melody_fail();  break;
-L_process_command9:
-	CALL       _melody_fail+0
-	GOTO       L_process_command1
-;main.c,76 :: 		}
-L_process_command0:
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      0
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command2
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      1
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command3
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      2
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command4
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      3
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command5
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      4
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command6
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      5
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command7
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      6
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command8
-	MOVF       FARG_process_command_cmd+0, 0
-	XORLW      7
-	BTFSC      STATUS+0, 2
-	GOTO       L_process_command9
-L_process_command1:
-;main.c,77 :: 		}
-L_end_process_command:
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,49 :: 		}
+L_end_nivel2:
 	RETURN
-; end of _process_command
+; end of _nivel2
+
+_nivel3:
+
+;main.c,51 :: 		void nivel3()
+;main.c,53 :: 		Sound_Play(1000,100);
+	MOVLW      232
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      3
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,54 :: 		}
+L_end_nivel3:
+	RETURN
+; end of _nivel3
+
+_nivel4:
+
+;main.c,56 :: 		void nivel4()
+;main.c,58 :: 		Sound_Play(1200,100);
+	MOVLW      176
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      4
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,59 :: 		}
+L_end_nivel4:
+	RETURN
+; end of _nivel4
+
+_nivel5:
+
+;main.c,61 :: 		void nivel5()
+;main.c,63 :: 		Sound_Play(1400,100);
+	MOVLW      120
+	MOVWF      FARG_Sound_Play_freq_in_hz+0
+	MOVLW      5
+	MOVWF      FARG_Sound_Play_freq_in_hz+1
+	MOVLW      100
+	MOVWF      FARG_Sound_Play_duration_ms+0
+	MOVLW      0
+	MOVWF      FARG_Sound_Play_duration_ms+1
+	CALL       _Sound_Play+0
+;main.c,64 :: 		}
+L_end_nivel5:
+	RETURN
+; end of _nivel5
 
 _main:
 
-;main.c,80 :: 		void main(void) {
-;main.c,81 :: 		unsigned char prev_strobe = 0;
-	CLRF       main_prev_strobe_L0+0
-;main.c,85 :: 		TRISB = 0xFF;
+;main.c,66 :: 		void main()
+;main.c,68 :: 		ANSEL = 0;
+	CLRF       ANSEL+0
+;main.c,69 :: 		ANSELH = 0;
+	CLRF       ANSELH+0
+;main.c,71 :: 		TRISB = 0xFF;
 	MOVLW      255
 	MOVWF      TRISB+0
-;main.c,86 :: 		TRISC = 0x00;   // RC2 salida (PWM buzzer)
-	CLRF       TRISC+0
-;main.c,89 :: 		Sound_Init(&PORTC, 2);  // RC2
+;main.c,73 :: 		TRISC2_bit = 0;
+	BCF        TRISC2_bit+0, BitPos(TRISC2_bit+0)
+;main.c,75 :: 		Sound_Init(&PORTC,2);
 	MOVLW      PORTC+0
 	MOVWF      FARG_Sound_Init_snd_port+0
 	MOVLW      2
 	MOVWF      FARG_Sound_Init_snd_pin+0
 	CALL       _Sound_Init+0
-;main.c,91 :: 		while (1) {
-L_main10:
-;main.c,92 :: 		unsigned char strobe_now = STROBE_PIN;
-	MOVLW      0
-	BTFSC      RB3_bit+0, BitPos(RB3_bit+0)
-	MOVLW      1
-	MOVWF      main_strobe_now_L1+0
-;main.c,95 :: 		if (strobe_now && !prev_strobe) {
-	MOVF       main_strobe_now_L1+0, 0
+;main.c,77 :: 		while(1)
+L_main6:
+;main.c,81 :: 		actual = PORTB & 0x0F;
+	MOVLW      15
+	ANDWF      PORTB+0, 0
+	MOVWF      R1+0
+	MOVF       R1+0, 0
+	MOVWF      main_actual_L1+0
+;main.c,83 :: 		if(actual != anterior)
+	MOVF       R1+0, 0
+	XORWF      _anterior+0, 0
+	BTFSC      STATUS+0, 2
+	GOTO       L_main8
+;main.c,85 :: 		switch(actual)
+	GOTO       L_main9
+;main.c,87 :: 		case 1:
+L_main11:
+;main.c,88 :: 		melodiaInicio();
+	CALL       _melodiaInicio+0
+;main.c,89 :: 		break;
+	GOTO       L_main10
+;main.c,91 :: 		case 2:
+L_main12:
+;main.c,92 :: 		turnoJugador();
+	CALL       _turnoJugador+0
+;main.c,93 :: 		break;
+	GOTO       L_main10
+;main.c,95 :: 		case 3:
+L_main13:
+;main.c,96 :: 		melodiaError();
+	CALL       _melodiaError+0
+;main.c,97 :: 		break;
+	GOTO       L_main10
+;main.c,99 :: 		case 4:
+L_main14:
+;main.c,100 :: 		melodiaVictoria();
+	CALL       _melodiaVictoria+0
+;main.c,101 :: 		break;
+	GOTO       L_main10
+;main.c,103 :: 		case 5:
+L_main15:
+;main.c,104 :: 		nivel1();
+	CALL       _nivel1+0
+;main.c,105 :: 		break;
+	GOTO       L_main10
+;main.c,107 :: 		case 6:
+L_main16:
+;main.c,108 :: 		nivel2();
+	CALL       _nivel2+0
+;main.c,109 :: 		break;
+	GOTO       L_main10
+;main.c,111 :: 		case 7:
+L_main17:
+;main.c,112 :: 		nivel3();
+	CALL       _nivel3+0
+;main.c,113 :: 		break;
+	GOTO       L_main10
+;main.c,115 :: 		case 8:
+L_main18:
+;main.c,116 :: 		nivel4();
+	CALL       _nivel4+0
+;main.c,117 :: 		break;
+	GOTO       L_main10
+;main.c,119 :: 		case 9:
+L_main19:
+;main.c,120 :: 		nivel5();
+	CALL       _nivel5+0
+;main.c,121 :: 		break;
+	GOTO       L_main10
+;main.c,122 :: 		}
+L_main9:
+	MOVF       main_actual_L1+0, 0
+	XORLW      1
+	BTFSC      STATUS+0, 2
+	GOTO       L_main11
+	MOVF       main_actual_L1+0, 0
+	XORLW      2
+	BTFSC      STATUS+0, 2
+	GOTO       L_main12
+	MOVF       main_actual_L1+0, 0
+	XORLW      3
+	BTFSC      STATUS+0, 2
+	GOTO       L_main13
+	MOVF       main_actual_L1+0, 0
+	XORLW      4
 	BTFSC      STATUS+0, 2
 	GOTO       L_main14
-	MOVF       main_prev_strobe_L0+0, 0
-	BTFSS      STATUS+0, 2
-	GOTO       L_main14
-L__main15:
-;main.c,96 :: 		cmd = read_bus();
-	CALL       _read_bus+0
-;main.c,97 :: 		process_command(cmd);
-	MOVF       R0+0, 0
-	MOVWF      FARG_process_command_cmd+0
-	CALL       _process_command+0
-;main.c,98 :: 		}
-L_main14:
-;main.c,100 :: 		prev_strobe = strobe_now;
-	MOVF       main_strobe_now_L1+0, 0
-	MOVWF      main_prev_strobe_L0+0
-;main.c,101 :: 		}
-	GOTO       L_main10
-;main.c,102 :: 		}
+	MOVF       main_actual_L1+0, 0
+	XORLW      5
+	BTFSC      STATUS+0, 2
+	GOTO       L_main15
+	MOVF       main_actual_L1+0, 0
+	XORLW      6
+	BTFSC      STATUS+0, 2
+	GOTO       L_main16
+	MOVF       main_actual_L1+0, 0
+	XORLW      7
+	BTFSC      STATUS+0, 2
+	GOTO       L_main17
+	MOVF       main_actual_L1+0, 0
+	XORLW      8
+	BTFSC      STATUS+0, 2
+	GOTO       L_main18
+	MOVF       main_actual_L1+0, 0
+	XORLW      9
+	BTFSC      STATUS+0, 2
+	GOTO       L_main19
+L_main10:
+;main.c,124 :: 		anterior = actual;
+	MOVF       main_actual_L1+0, 0
+	MOVWF      _anterior+0
+;main.c,125 :: 		}
+L_main8:
+;main.c,126 :: 		}
+	GOTO       L_main6
+;main.c,127 :: 		}
 L_end_main:
 	GOTO       $+0
 ; end of _main

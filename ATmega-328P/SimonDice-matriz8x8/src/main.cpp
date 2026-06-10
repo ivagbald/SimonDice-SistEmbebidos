@@ -2,20 +2,24 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
+// puertos del atmega conectados al MAX7219 PARA EL CONTROL DE LA MATRIZ
 #define DIN   PB3
 #define LOAD  PB2
 #define CLK   PB5
 
+// puertos para lectura de botones
 #define BTN1 PD2
 #define BTN2 PD3
 #define BTN3 PD4
 #define BTN4 PD5
 
+
 uint8_t nivel = 1;
 uint8_t secuencia[8];
 
+// funcion  bus de comunicacion paralela con el PIC16F887
 void enviarPIC(uint8_t dato)
-{
+{ 
     PORTC = (PORTC & 0xF0) | dato;
 
     _delay_ms(100);
